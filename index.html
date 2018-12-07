@@ -19,7 +19,29 @@
 </head>
 
 <body>
-    
+    <div class="container">
+        <h2>Add Train</h2>
+        <form action="/action_page.php">
+            <div class="form-group">
+                <label for="train-name">Train Name</label>
+                <input type="train-name" class="form-control" id="train-name" name="train-name">
+            </div>
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <input type="destination" class="form-control" id="destination" name="destination">
+            </div>
+            <div class="form-group">
+                <label for="first-train-time">First Train Time (miltary time)</label>
+                <input type="first-train-time" class="form-control" id="first-train-time" name="first-train-time"
+                    placeholder="00:00">
+            </div>
+            <div class="form-group">
+                <label for="frequency">Frequency (min)</label>
+                <input type="frequency" class="form-control" id="frequency" name="frequency">
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit-train">Submit</button>
+        </form>
+    </div>
 </body>
 
 </html>
