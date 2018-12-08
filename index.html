@@ -10,15 +10,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./assets/css/reset.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+    <script src="./assets/javascript/moment-with-locales.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="./assets/javascript/app.js"></script>
 </head>
 
 <body>
+
+    <!-- table of existing trains -->
+    <div class="container">
+        <h2>Current Train Schedule</h2>
+        <table class="table table-striped">
+            <thead id="train-table-head">
+                <tr>
+                    <th>Train Name</th>
+                    <th>Destination</th>
+                    <th>Frequency (min)</th>
+                    <th>Next Arrival</th>
+                    <th>Time Away</th>
+                </tr>
+            </thead>
+            <tbody id="train-table-body">
+                <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                </tr>
+                <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                </tr>
+                <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>john@example.com</td>
+                    <td>Mary</td>
+                    <td>Moe</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- add train form -->
     <div class="container">
         <h2>Add Train</h2>
         <form action="/action_page.php">
@@ -37,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label for="frequency">Frequency (min)</label>
-                <input type="frequency" class="form-control" id="frequency" name="frequency">
+                <input type="number" class="form-control" id="frequency" name="frequency">
             </div>
             <button type="submit" class="btn btn-primary" id="submit-train">Submit</button>
         </form>
