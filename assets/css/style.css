@@ -1,9 +1,15 @@
 .jumbotron {
     text-align: center;
-    background-color: rgba(0, 143, 168, 0.678);
+    background-color: #008fa8ad;
     color: white;
 }
 
 #submission-form {
     margin-bottom: 30px;
+}
+
+.btn {
+    color: white;
+    background-color: #008fa8ad;
+    border-color: #008fa8ad;
 }
