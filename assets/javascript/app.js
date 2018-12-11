@@ -38,6 +38,7 @@ $(document).ready(function () {
     });
 
 
+    
     database.ref().on('child_added', function (snap) {
         console.log(snap);
         console.log(snap.val());
@@ -49,7 +50,7 @@ $(document).ready(function () {
         $(`#row${snap.ref_.key}`).append(`<td id="frequency${snap.ref_.key}">${snap.val().frequency}</td>`);
         $(`#row${snap.ref_.key}`).append(`<td id="nextArrival${snap.ref_.key}">${moment().add(calculateMinutesAway(), 'm').format('HH:mm A')}</td>`);
         $(`#row${snap.ref_.key}`).append(`<td id="minutesAway${snap.ref_.key}">${calculateMinutesAway()}</td>`);
-        $(`#row${snap.ref_.key}`).append(`<td id="remove${snap.ref_.key}"><button class="btn remove-btn" data-id=${snap.ref_.key}">Remove</button></td>`)
+        $(`#row${snap.ref_.key}`).append(`<td id="remove${snap.ref_.key}"><button class="btn remove-btn" data-id="${snap.ref_.key}">Remove</button></td>`)
         // update output once every second until minute changes, then update it once every minute
         var initialMinutesAway = calculateMinutesAway();
         var sInterval = setInterval(function () {
