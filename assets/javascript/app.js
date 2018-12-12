@@ -53,7 +53,7 @@ $(document).ready(function () {
     });
 
     // confirm database edit
-    $(document).on('click', '.edit-btn', function (e) {
+    $(document).on('click', '.confirm-btn', function (e) {
         e.preventDefault();
         if (currentlyEditing === true) {
             currentlyEditing = false;
@@ -62,7 +62,11 @@ $(document).ready(function () {
             $(`#frequency${$(this).attr('data-id')}`).attr('contenteditable', false);
             $(this).attr('class', 'btn edit-btn');
             $(this).text('Edit');
-            
+            database.ref().child($(this).attr('data-id')).set({
+                trainName: $(`#name${$(this).attr('data-id')}`).text(),
+                destination: $(`#destination${$(this).attr('data-id')}`).text(),
+                frequency: $(`#frequency${$(this).attr('data-id')}`).text(),
+            });
         }
     });
 
@@ -108,10 +112,50 @@ $(document).ready(function () {
             }
         }, 1000);
         function calculateMinutesAway() {
-            var firstTimeConverted = moment(snap.val().firstTrainTime, 'HH:mm');
+            var firstTimeConverted = moment(snap.val().firstTrainTime, 'LT');
             var timeDifference = moment().diff(moment(firstTimeConverted), 'm');
             var remainder = timeDifference % snap.val().frequency;
             var minutesAway = snap.val().frequency - remainder;
+            return minutesAway;
+        }
+        function updateTable() {
+            $(`#name${snap.ref_.key}`).text(snap.val().trainName);
+            $(`#destination${snap.ref_.key}`).text(snap.val().destination);
+            $(`#frequency${snap.ref_.key}`).text(snap.val().frequency);
+            $(`#nextArrival${snap.ref_.key}`).text(moment().add(calculateMinutesAway(), 'm').format('LT'));
+            $(`#minutesAway${snap.ref_.key}`).text(calculateMinutesAway());
+        }
+    });
+
+    database.ref().on('child_changed', function (snap) {
+        // update output once every second until minute changes, then update it once every minute
+        console.log(snap.ref_.key);
+        var initialMinutesAway = calculateMinutesAway();
+        var sInterval = setInterval(function () {
+            if (currentlyEditing === true) {
+                clearInterval(sInterval);
+            } else {
+                updateTable();
+                if (calculateMinutesAway() !== initialMinutesAway) {
+                    clearInterval(sInterval);
+                    var mInterval = setInterval(function () {
+                        if (currentlyEditing === true) {
+                            clearInterval(mInterval);
+                        } else {
+                            updateTable();
+                        }
+                    }, 60000);
+                }
+            }
+        }, 1000);
+        function calculateMinutesAway() {
+            var firstTimeConverted = moment(snap.val().firstTrainTime, 'HH:mm');
+            console.log(firstTimeConverted);
+            var timeDifference = moment().diff(moment(firstTimeConverted), 'm');
+            console.log(timeDifference);
+            var remainder = timeDifference % snap.val().frequency;
+            var minutesAway = snap.val().frequency - remainder;
+            console.log(minutesAway);
             return minutesAway;
         }
         function updateTable() {
