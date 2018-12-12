@@ -21,7 +21,7 @@ $(document).ready(function () {
         database.ref().push({
             trainName: $("#train-name").val().trim(),
             destination: $("#destination").val().trim(),
-            firstTrainTime: moment([$("#first-train-time").val().trim()]).format('HH:mm'),
+            firstTrainTime: $("#first-train-time").val().trim(),
             frequency: $("#frequency").val().trim(),
         });
         // clear form
@@ -67,8 +67,28 @@ $(document).ready(function () {
                 destination: $(`#destination${$(this).attr('data-id')}`).text(),
                 frequency: $(`#frequency${$(this).attr('data-id')}`).text(),
             });
+            // $('#train-table-body').empty();
         }
     });
+
+
+    /*
+    
+    1. How do I clear update interval outside of on child added function?
+        (declaring setInterval variables globally doesn't work)
+        (my current method doesn't clear the minute interval unless a minute mark passes while editing)
+    
+    2. How to make a function for all of the redudant stuff between ref().on functions?
+        (currently breaks everything if I make a global scope function for them)
+
+    3. Why am I getting invalid date on firstTimeConverted in the on child changed function?
+        (works perfectly in the child added function)
+    
+    4. Why doesn't the on child added function append duplicates of the other trains when I add a new one?
+
+    5. Why doesn't appending elements in the on child changed function work?
+    
+    */
 
 
     database.ref().on('child_added', function (snap) {
@@ -128,6 +148,22 @@ $(document).ready(function () {
     });
 
     database.ref().on('child_changed', function (snap) {
+        // $('#train-table-body').append(`<tr id="row${snap.ref_.key}">`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="name${snap.ref_.key}">${snap.val().trainName}</td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="destination${snap.ref_.key}">${snap.val().destination}</td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="frequency${snap.ref_.key}">${snap.val().frequency}</td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="nextArrival${snap.ref_.key}">
+        //     ${moment().add(calculateMinutesAway(), 'm').format('LT')}</td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="minutesAway${snap.ref_.key}">${calculateMinutesAway()}</td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="remove${snap.ref_.key}">
+        //     <button class="btn remove-btn" data-id="${snap.ref_.key}">Remove</button></td>`);
+        // $(`#row${snap.ref_.key}`).append(`<td id="edit${snap.ref_.key}">
+        //     <button class="btn edit-btn" data-id="${snap.ref_.key}">Edit</button></td>`);
+        // $(`#edit${snap.ref_.key}`).css({
+        //     'min-width': `${116}px`,
+        //     'display': 'flex',
+        //     'justify-content': 'center',
+        // });
         // update output once every second until minute changes, then update it once every minute
         console.log(snap.ref_.key);
         var initialMinutesAway = calculateMinutesAway();
@@ -149,7 +185,7 @@ $(document).ready(function () {
             }
         }, 1000);
         function calculateMinutesAway() {
-            var firstTimeConverted = moment(snap.val().firstTrainTime, 'HH:mm');
+            var firstTimeConverted = moment(snap.val().firstTrainTime, 'LT');
             console.log(firstTimeConverted);
             var timeDifference = moment().diff(moment(firstTimeConverted), 'm');
             console.log(timeDifference);
