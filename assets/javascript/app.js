@@ -122,7 +122,7 @@ $(document).ready(function () {
                 if (calculateMinutesAway() !== initialMinutesAway) {
                     clearInterval(sInterval);
                     var mInterval = setInterval(function () {
-                        if (currentlyEditing === true) {
+                        if (currentlyEditing) {
                             clearInterval(mInterval);
                         } else {
                             updateTable();
@@ -185,6 +185,7 @@ $(document).ready(function () {
             }
         }, 1000);
         function calculateMinutesAway() {
+            console.log(snap.val().firstTrainTime);
             var firstTimeConverted = moment(snap.val().firstTrainTime, 'LT');
             console.log(firstTimeConverted);
             var timeDifference = moment().diff(moment(firstTimeConverted), 'm');
