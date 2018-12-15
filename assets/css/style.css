@@ -13,3 +13,9 @@
     background-color: #008fa8ad;
     border-color: #008fa8ad;
 }
+
+/* td[contenteditable=true] {
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+} */

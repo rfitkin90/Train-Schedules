@@ -45,11 +45,13 @@ $(document).ready(function () {
     // edit database
     $(document).on('click', '.edit-btn', function (e) {
         e.preventDefault();
+        // make text content editable
         $(`#name${$(this).attr('data-id')}`).attr('contenteditable', true);
         $(`#destination${$(this).attr('data-id')}`).attr('contenteditable', true);
         $(`#frequency${$(this).attr('data-id')}`).attr('contenteditable', true);
         $(this).attr('class', 'btn confirm-btn');
         $(this).text('Confirm');
+        // clear timeout/interval so it doesn't update while you're trying to change the text
         clearTimeout(updateTimeout);
         clearInterval(updateInterval);
     });
@@ -57,24 +59,27 @@ $(document).ready(function () {
     // confirm database edit
     $(document).on('click', '.confirm-btn', function (e) {
         e.preventDefault();
+        // make fields no longer editable
         $(`#name${$(this).attr('data-id')}`).attr('contenteditable', false);
         $(`#destination${$(this).attr('data-id')}`).attr('contenteditable', false);
         $(`#frequency${$(this).attr('data-id')}`).attr('contenteditable', false);
         $(this).attr('class', 'btn edit-btn');
         $(this).text('Edit');
+        // set database child's property values to match changed text content
         database.ref().child($(this).attr('data-id')).set({
             trainName: $(`#name${$(this).attr('data-id')}`).text(),
             destination: $(`#destination${$(this).attr('data-id')}`).text(),
             firstTrainTime: $(`#frequency${$(this).attr('data-id')}`).attr('data-firstTrainTime'),
             frequency: $(`#frequency${$(this).attr('data-id')}`).text(),
         });
-        var i = trainArray.findIndex(i => i.firebaseID === $(this).attr('data-id'));
-        trainArray[i].trainName = $(`#trainName${$(this).attr('data-id')}`).text();
-        trainArray[i].destination = $(`#frequency${$(this).attr('data-id')}`).text();
-        trainArray[i].frequency = $(`#frequency${$(this).attr('data-id')}`).text();
+        // update table and set interval back
+        for (i = 0; i < trainArray.length; i++) {
+            calculateMinutesAway(i);
+            updateTable(i);
+        }
         var t = (60 - moment().seconds()) * 1000;
-        var updateTimeout = setTimeout(() => {
-            var updateInterval = setInterval(() => {
+        updateTimeout = setTimeout(() => {
+            updateInterval = setInterval(() => {
                 for (i = 0; i < trainArray.length; i++) {
                     calculateMinutesAway(i);
                     updateTable(i);
@@ -95,11 +100,9 @@ $(document).ready(function () {
         }, 1000);
     }, t);
 
-    /*
-    can you turn this for loop into forEach?(while still passing i as parameter)
-    */
-
+    // when child is added to database
     database.ref().on('child_added', function (snap) {
+        // push child data to array
         trainArray.push({
             'firebaseID': snap.ref_.key,
             'trainName': snap.val().trainName,
@@ -133,7 +136,17 @@ $(document).ready(function () {
         });
     });
 
+    // when child on database is changed
     database.ref().on('child_changed', function (snap) {
+        // change corresponding array element's data to match the changed child's
+        var i = trainArray.findIndex(i => i.firebaseID === snap.ref_.key);
+        trainArray[i] = {
+            'firebaseID': snap.ref_.key,
+            'trainName': snap.val().trainName,
+            'destination': snap.val().destination,
+            'firstTrainTime': snap.val().firstTrainTime,
+            'frequency': snap.val().frequency,
+        }
         calculateMinutesAway(i);
         updateTable(i);
     });
