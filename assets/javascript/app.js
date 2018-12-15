@@ -84,7 +84,7 @@ $(document).ready(function () {
                     calculateMinutesAway(i);
                     updateTable(i);
                 }
-            }, 1000);
+            }, 60000);
         }, t);
     });
 
@@ -97,7 +97,7 @@ $(document).ready(function () {
                 calculateMinutesAway(i);
                 updateTable(i);
             }
-        }, 1000);
+        }, 60000);
     }, t);
 
     // when child is added to database
