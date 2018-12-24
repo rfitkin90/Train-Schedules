@@ -15,6 +15,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.0/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.0/firebaseui.css" />
+    <script src="https://apis.google.com/js/api.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        gapi.load("auth2", function () {
+            // Library loaded.
+        });
+    </script>
     <link rel="stylesheet" href="./assets/css/style.css">
     <script src="./assets/javascript/app.js"></script>
 </head>
@@ -26,8 +34,10 @@
         <p>Choo choo.</p>
     </div>
     <!-- table of existing trains -->
-    <div class="container">
-        <h2>Current Train Schedule</h2>
+    <div class="container panel-div">
+        <h2 class="panel-header">
+            <span class="panel-title">Current Train Schedule</span>
+        </h2>
         <table class="table table-striped">
             <thead id="train-table-head">
                 <tr>
@@ -42,12 +52,13 @@
             </thead>
             <tbody id="train-table-body"></tbody>
         </table>
-        <hr>
     </div>
 
     <!-- add train form -->
-    <div class="container" id="submission-form">
-        <h2>Add Train</h2>
+    <div class="container panel-div" id="submission-form">
+        <h2 class="panel-header" id="submission-header">
+            <span class="panel-title">Add Train</span>
+        </h2>
         <form action="/action_page.php">
             <div class="form-group">
                 <label for="train-name">Train Name</label>
