@@ -48,6 +48,7 @@ td[contenteditable=true] {
 
 .panel-title {
     margin-left: 10px;
+    padding: 5px;
 }
 
 .form-group {
@@ -62,4 +63,8 @@ td[contenteditable=true] {
 
 #submission-header {
     margin-bottom: 10px;
+}
+
+#train-schedule-title {
+    margin-bottom: 0;
 }
